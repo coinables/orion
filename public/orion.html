@@ -55,7 +55,9 @@
 <style>
     html,body{
         font-family: "Calibri", "Arial", "sans-serif";
-		
+		background-color: #2e1f2e;
+		margin: 0px;
+		padding: 0px;
     }
     #graph-container {
       top: -20px;
@@ -101,6 +103,42 @@
         border: 1px solid #fff;
         margin: 3px;
     }
+	.my-face{
+    width: 70px;
+    height: 70px;
+    background: #1a0933;
+    border-radius: 50% 50%50% 4%;
+    transform: rotate(-46deg);
+}
+.alien-wrapper{
+    display: inline-block;
+    margin-bottom: 11px;
+	position: relative;
+	margin: auto;
+	margin-bottom: 10px;
+}
+.eye{
+    width: 20px;
+    height: 20px;
+    background-color: #57b6f2;
+    position: absolute;
+    top: 28px;
+    left: 8px;
+    border-top-left-radius: 100%;
+    border-bottom-right-radius: 100%;
+    transform: rotate(85deg);
+}
+.eye-2 {
+    width: 20px;
+    height: 20px;
+    background-color: #57b6f2;
+    position: absolute;
+    top: 28px;
+    border-top-left-radius: 100%;
+    border-bottom-right-radius: 100%;
+    transform: rotate(0deg);
+    right:8px;
+}
     h4{
         margin: -5px;
     }
@@ -111,23 +149,58 @@
         top:50px;
         text-align: right;
     }
-    
+    #splash{
+		width: 100%;
+		height: 1000px;
+		background-color: #2e1f2e;
+		color: #f2f2f2;
+		font-size: 36px;
+		display: block;
+		position: fixed;
+		top: 0px;
+	}
+	#container{
+		display: none;
+	}
+	#txbar{
+		display: inline-block;
+		position: absolute; 
+		top: 0px;
+		border: 3px solid #0e1e0e;
+		border-radius: 13px;
+		padding: 7px;
+		left: 26%;
+	}
   </style>
 </head>
 
 <body>
-
+<div id="splash"><center><br><br><br><br><br><br><br><div class="alien-wrapper position-relative">
+            <div class="my-face"></div>
+            <div class="eye"></div>
+            <div class="eye-2"></div>
+            
+        </div><br><em>ORION</em><br><span style="position:relative; top: -10px; font-size:16px;"><em>[TRANSACTION VISUALIZER]</em></span></center></div>
 <div id="container">  
-<div id="graph-container"></div>
-  <br>  
+<div id="graph-container"></div>  
 </div>
-<input type="text" placeholder="SEARCH RELATED" onkeyup="return nodeSearch();" id="search">
+<input type="text" placeholder="EXPLORE RELATED" style="padding: 4px; font-size: 16px; width: 350px; margin-left: 15px; margin-bottom: 15px;" onkeyup="return nodeSearch();" id="search">
 <div id="searchOutput"></div>
+<div id="txbar"><input type="text" id="txQuery" placeholder="TRANSACTION ID" style="padding: 4px; font-size: 16px; width: 550px;"><button onclick="explore();" style="padding: 4px; font-size: 16px;">GO</button></div>
+<br><br>
 <script>
-
+function explore(){
+	var txInput = $("#txQuery").val();
+	
+	var url = "../public/orion.html?q="+txInput;
+	window.location.replace(url);
+}
 
 window.onload = function(){
-
+	
+	$("#splash").fadeOut(5000);
+    $("#container").fadeIn(8000);
+    
 	var searchParams = new URLSearchParams(window.location.search);
 
 	if(searchParams.has('q')){
