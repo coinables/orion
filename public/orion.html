@@ -49,6 +49,7 @@
 <script src="../src/misc/sigma.misc.bindDOMEvents.js"></script>
 <script src="../src/misc/sigma.misc.drawHovers.js"></script>
 <script src="../plugins/sigma.plugins.neighborhoods/sigma.plugins.neighborhoods.js"></script>
+<script src="../plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js"></script>
 <script src="../plugins/sigma.layout.forceAtlas2/supervisor.js"></script>
 <script src="../plugins/sigma.layout.forceAtlas2/worker.js"></script>
 <script src="lib/jquery-2.1.1.min.js"></script>
@@ -197,6 +198,19 @@ function explore(){
 }
 
 window.onload = function(){
+
+	knownAddresses = [{"address":"bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h","label":"Binance Hot Wallet"}];
+	knownCheck = ["bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h"];
+	
+	function checkList(checkOutputScript){
+		if(knownCheck.includes(checkOutputScript)){
+			var findindex = knownCheck.indexOf(checkOutputScript);
+			var thislabel = knownAddresses[findindex].label;
+		} else {
+			var thislabel = checkOutputScript;
+		}
+		return thislabel;
+	}
 	
 	$("#splash").fadeOut(5000);
     $("#container").fadeIn(8000);
@@ -234,7 +248,9 @@ window.onload = function(){
 						
 						} else {
 							duplicateCheck.push(txapi.vin[i].prevout.scriptpubkey_address);
-							nodesJSON.nodes.push({"nodeid":txapi.vin[i].prevout.scriptpubkey_address,"alias":txapi.vin[i].prevout.scriptpubkey_address})
+							//check if address is a known address
+							let lookuplabel = checkList(txapi.vin[i].prevout.scriptpubkey_address)
+							nodesJSON.nodes.push({"nodeid":txapi.vin[i].prevout.scriptpubkey_address,"alias":lookuplabel})
 						}
 						
 					}
@@ -243,7 +259,9 @@ window.onload = function(){
 						
 						} else {
 							duplicateCheck.push(txapi.vout[ii].scriptpubkey_address);
-							nodesJSON.nodes.push({"nodeid":txapi.vout[ii].scriptpubkey_address,"alias":txapi.vout[ii].scriptpubkey_address})
+							//check if address is a known address
+							let lookuplabel = checkList(txapi.vout[ii].scriptpubkey_address)
+							nodesJSON.nodes.push({"nodeid":txapi.vout[ii].scriptpubkey_address,"alias":lookuplabel})
 						}
 							
 					}
@@ -302,7 +320,8 @@ window.onload = function(){
 							
 							} else {
 								duplicateCheck.push(txapispent.vout[iii].scriptpubkey_address);
-								nodesJSON.nodes.push({"nodeid":txapispent.vout[iii].scriptpubkey_address,"alias":txapispent.vout[iii].scriptpubkey_address})
+								let lookuplabel = checkList(txapispent.vout[iii].scriptpubkey_address)
+								nodesJSON.nodes.push({"nodeid":txapispent.vout[iii].scriptpubkey_address,"alias":lookuplabel})
 							}
 							
 						}
@@ -313,7 +332,8 @@ window.onload = function(){
 							
 							} else {
 								duplicateCheck.push(txapispent.vin[iiii].prevout.scriptpubkey_address);
-								nodesJSON.nodes.push({"nodeid":txapispent.vin[iiii].prevout.scriptpubkey_address,"alias":txapispent.vin[iiii].prevout.scriptpubkey_address})
+								let lookuplabel = checkList(txapispent.vin[iiii].prevout.scriptpubkey_address)
+								nodesJSON.nodes.push({"nodeid":txapispent.vin[iiii].prevout.scriptpubkey_address,"alias":lookuplabel})
 							}
 							
 							channelsJSON.channels.push({"source":txapispent.vin[iiii].prevout.scriptpubkey_address, "destination":spenttxid, "short_channel_id":spenttxid+iiii})
@@ -400,6 +420,8 @@ window.onload = function(){
 	s = new sigma({
 	  graph: g,
 	  settings: {
+		mouseEnabled: true,
+		touchEnabled: true,
 		enableHovering: true
 	  }
 	});
@@ -409,7 +431,7 @@ window.onload = function(){
 	  type: 'svg',
 	  container: document.getElementById('graph-container'),
 	  freeStyle: true
-	});
+	});       
 
 	s.refresh();
 
