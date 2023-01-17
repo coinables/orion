@@ -199,8 +199,40 @@ function explore(){
 
 window.onload = function(){
 
-	knownAddresses = [{"address":"bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h","label":"Binance Hot Wallet"}];
-	knownCheck = ["bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h"];
+	knownAddresses = [
+		{"address":"bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h","label":"Binance Hot Wallet"},
+		{"address":"325gSHHe7UGvzEc9kGx43VqPboXUVwa26i","label":"FTX Hot Wallet"},
+		{"address":"bc1q9d4ywgfnd8h43da5tpcxcn6ajv590cg6d3tg6axemvljvt2k76zs50tv4q","label":"Luna Foundation Guard"},
+		{"address":"18saWjMCchDTGWunefuDJSWNdz4p6KtfBL","label":"Coinbase Cold Wallet"},
+		{"address":"13nwifHUz5ZfHuQhk5ETJ4BhmqbuQdvTFp","label":"Coinbase Cold Wallet"},
+		{"address":"1PL2cmmMLmGGDtqaSZJY8DR1iKJaziEPJv","label":"Coinbase Cold Wallet"},
+		{"address":"1Dt4Q2ofKUtHwvjN45tAUfikNBfJrDERcZ","label":"Coinbase Cold Wallet"},
+		{"address":"3CP62cZgAgx4yAHnxNFCqT17LJERhVwz4C","label":"CashApp Hot Wallet"},
+		{"address":"1Kr6QSydW9bFQG1mXiPNNu6WpJGmUa9i1g","label":"Bitfinex Hot Wallet"},
+		{"address":"37biYvTEcBVMoR1NGkPTGvHUuLTrzcLpiv","label":"Bitvavo Hot Wallet"},
+		{"address":"38MfJkxPkpwsZxkyfESwjdaKBdXrV8DpWr","label":"Coinbase Hot Wallet"},
+		{"address":"38XnPvu9PmonFU9WouPXUjYbW91wa5MerL","label":"Coinbene Hot Wallet"},
+		{"address":"1BKN5obhkdoequshHnn96zZvFi3wCEdfiC","label":"Houbi Hot Wallet"},
+		{"address":"1VERF5rDyVoS4mPCbK68vSGpVo95cAXRm","label":"Gemini Hot Wallet"},
+		{"address":"143gLvWYUojXaWZRrxquRKpVNTkhmr415B","label":"Houbi Hot Wallet"}
+	];
+	knownCheck = [
+		"bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h",
+		"325gSHHe7UGvzEc9kGx43VqPboXUVwa26i",
+		"bc1q9d4ywgfnd8h43da5tpcxcn6ajv590cg6d3tg6axemvljvt2k76zs50tv4q",
+		"18saWjMCchDTGWunefuDJSWNdz4p6KtfBL",
+		"13nwifHUz5ZfHuQhk5ETJ4BhmqbuQdvTFp",
+		"1PL2cmmMLmGGDtqaSZJY8DR1iKJaziEPJv",
+		"1Dt4Q2ofKUtHwvjN45tAUfikNBfJrDERcZ",
+		"3CP62cZgAgx4yAHnxNFCqT17LJERhVwz4C",
+		"1Kr6QSydW9bFQG1mXiPNNu6WpJGmUa9i1g",
+		"37biYvTEcBVMoR1NGkPTGvHUuLTrzcLpiv",
+		"38MfJkxPkpwsZxkyfESwjdaKBdXrV8DpWr",
+		"38XnPvu9PmonFU9WouPXUjYbW91wa5MerL",
+		"1BKN5obhkdoequshHnn96zZvFi3wCEdfiC",
+		"1VERF5rDyVoS4mPCbK68vSGpVo95cAXRm",
+		"143gLvWYUojXaWZRrxquRKpVNTkhmr415B"
+	];
 	
 	function checkList(checkOutputScript){
 		if(knownCheck.includes(checkOutputScript)){
