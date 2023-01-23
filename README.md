@@ -3,6 +3,8 @@
 
 A simple tool to visualize the path of bitcoin transaction and outputs. This is demo software powered by mempool.space API and sigma.js charting library. 
 
+![screenshot](screenshot.png)
+
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
