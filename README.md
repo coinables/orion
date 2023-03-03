@@ -1,4 +1,5 @@
 # ORION
+![logo](logo.png)
 ## Transaction Visualizer
 
 A simple tool to visualize the path of bitcoin transaction and outputs. This is demo software powered by mempool.space API and sigma.js charting library. 
