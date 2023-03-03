@@ -5,6 +5,11 @@ A simple tool to visualize the path of bitcoin transaction and outputs. This is 
 
 ![screenshot](screenshot.png)
 
+Run `orion.html` located in the `public` directory to visualize a single transaction and nearest relations.
+
+Run `link.html` located in the `public` directory to visualize and link multiple transactions using the memory add (M+) and memory remove (M-) buttons. Clicking (M+) will save the current transaction data to the clients local memory, and will be loaded up with all future transactions queried. You can use the (M+) button multiple times to expand the visualize. Clicking (M-) will remove the saved data from local memory.
+
+
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
