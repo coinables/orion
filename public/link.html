@@ -374,39 +374,21 @@ window.onload = function(){
 		//default tx to load if random recent tx ajax query fails
 		var param = "0f58c9a7aee48bd72ffd929fd3ac80bf95db5be13a6493b2f954de9ae659710d";
 		
-		//fetch the blockheight tip
+		var randomKnownIndex = Math.random() * knownCheck.length;
+		randomKnownIndex = Math.floor(randomKnownIndex);
+		var randomKnown = knownCheck[randomKnownIndex];
+		
+		//fetch transactions from random known address
 		$.ajax({
 			async: false,
 			type: "GET",
-			url: "https://mempool.space/api/blocks/tip/height",
-			success: function(latestblockheight) {
-				//use blockheight tip to calc 10 blocks ago
-				var tenblocksago = latestblockheight-10;
+			url: "https://mempool.space/api/address/"+randomKnown+"/txs",
+			success: function(addrtxs) {
+				//pick a random transaction to visualize
+				var randomPick = Math.random() * addrtxs.length;
+				randomPick = Math.floor(randomPick);
 				
-				$.ajax({
-					async: false,
-					type: "GET",
-					url: "https://mempool.space/api/block-height/"+tenblocksago,
-					success: function(latestblockhash){
-						
-						
-							$.ajax({
-								async: false,
-								type: "GET",
-								url: "https://mempool.space/api/block/"+latestblockhash+"/txids",
-								success: function(latesttxs) {
-									//pick a random transaction to visualize
-									let numtxs = latesttxs.length-1;
-									let randomtx = Math.random() * numtxs;
-									randomtx = Math.floor(randomtx); 
-									param = latesttxs[randomtx];
-								}
-							})
-						
-						
-					}
-				})
-				
+				param = addrtxs[randomPick].txid;
 				
 			}
 		});	
