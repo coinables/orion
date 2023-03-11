@@ -203,7 +203,7 @@
 </div>
 
 <div id="searchOutput"></div>
-<div id="navbanner"><span style="color: #fff; font-size: 18px;">ORION</span><div id="txbar"><input type="text" id="txQuery" placeholder="TRANSACTION ID" style="padding: 3px; font-size: 11px; width: 550px;"> <button onclick="explore();" style="padding: 4px; font-weight: bold; font-size: 9px; background-color: #0e0f0e; color: #AEE7F8; border: 1px solid #2e2f2e; cursor: pointer;">VIEW</button>&nbsp;<input type="text" placeholder="SEARCH/FILTER THIS VISUAL" style="padding: 3px; font-size: 9px; margin-left: 15px; width:200px;" onkeyup="return nodeSearch();" id="search">&nbsp; <button onclick="txMemoryAdd();" style="padding: 4px; font-weight: bold; font-size: 9px; background-color: #0e0f0e; color: #AEE7F8; border: 1px solid #2e2f2e; cursor: pointer;">M+</button>  <button onclick="txMemoryRemove();" style="padding: 4px; font-weight: bold; font-size: 9px; background-color: #0e0f0e; color: #AEE7F8; border: 1px solid #2e2f2e; cursor: pointer;">M-</button></div></div>
+<div id="navbanner"><span style="color: #fff; font-size: 18px; cursor: pointer;" onclick="window.location.replace('../../');">ORION</span><div id="txbar"><input type="text" id="txQuery" placeholder="TRANSACTION ID" style="padding: 3px; font-size: 11px; width: 550px;"> <button onclick="explore();" style="padding: 4px; font-weight: bold; font-size: 9px; background-color: #0e0f0e; color: #AEE7F8; border: 1px solid #2e2f2e; cursor: pointer;">VIEW</button>&nbsp;<input type="text" placeholder="SEARCH/FILTER THIS VISUAL" style="padding: 3px; font-size: 9px; margin-left: 15px; width:200px;" onkeyup="return nodeSearch();" id="search">&nbsp; <button onclick="txMemoryAdd();" style="padding: 4px; font-weight: bold; font-size: 9px; background-color: #0e0f0e; color: #AEE7F8; border: 1px solid #2e2f2e; cursor: pointer;">M+</button>  <button onclick="txMemoryRemove();" style="padding: 4px; font-weight: bold; font-size: 9px; background-color: #0e0f0e; color: #AEE7F8; border: 1px solid #2e2f2e; cursor: pointer;">M-</button></div></div>
 
 <script>
 function explore(){
@@ -314,7 +314,14 @@ window.onload = function(){
 		{"address":"bc1q0zgt8lfgc5p8gz4rg76jkugj0duqtlfdps8zfv","label":"HitBTC"},
 		{"address":"3JjPf13Rd8g6WAyvg8yiPnrsdjJt1NP4FC","label":"HitBTC"},
 		{"address":"1DcKsGnjpD38bfj6RMxz945YwohZUTVLby","label":"HitBTC"},
-		{"address":"bc1qwndtqm586uvs6m6penacgva4en33l9qqwrhdyj","label":"HitBTC"}
+		{"address":"bc1qwndtqm586uvs6m6penacgva4en33l9qqwrhdyj","label":"HitBTC"},
+		{"address":"bc1qyy30guv6m5ez7ntj0ayr08u23w3k5s8vg3elmxdzlh8a3xskupyqn2lp5w","label":"BitFlyer"},
+		{"address":"bc1qzjeg3h996kw24zrg69nge97fw8jc4v7v7yznftzk06j3429t52vse9tkp9","label":"BitFlyer"},
+		{"address":"bc1qdl753ur9ucwa3cgfrud2nqvu7k69dykk3cwwx6g64a5szn3xw92sp8mc7a","label":"BitFlyer"},
+		{"address":"bc1qns9f7yfx3ry9lj6yz7c9er0vwa0ye2eklpzqfw","label":"Fixed Float Exchange"},
+		{"address":"bc1quq29mutxkgxmjfdr7ayj3zd9ad0ld5mrhh89l2","label":"Gemini Exchange"},
+		{"address":"17QyR2ixNj1AgpD5ZuXubvSJ3gPPQVcsvp","label":"Binance Exchange"},
+		{"address":"3MCMZjWAMdGqAhi1iF1oyiiE2jY5yBAYzV","label":"Kraken Exchange"}
 		];
 	
 	knownCheck = [
@@ -390,7 +397,14 @@ window.onload = function(){
 		"bc1q0zgt8lfgc5p8gz4rg76jkugj0duqtlfdps8zfv",
 		"3JjPf13Rd8g6WAyvg8yiPnrsdjJt1NP4FC",
 		"1DcKsGnjpD38bfj6RMxz945YwohZUTVLby",
-		"bc1qwndtqm586uvs6m6penacgva4en33l9qqwrhdyj"
+		"bc1qwndtqm586uvs6m6penacgva4en33l9qqwrhdyj",
+		"bc1qyy30guv6m5ez7ntj0ayr08u23w3k5s8vg3elmxdzlh8a3xskupyqn2lp5w",
+		"bc1qzjeg3h996kw24zrg69nge97fw8jc4v7v7yznftzk06j3429t52vse9tkp9",
+		"bc1qdl753ur9ucwa3cgfrud2nqvu7k69dykk3cwwx6g64a5szn3xw92sp8mc7a",
+		"bc1qns9f7yfx3ry9lj6yz7c9er0vwa0ye2eklpzqfw",
+		"bc1quq29mutxkgxmjfdr7ayj3zd9ad0ld5mrhh89l2",
+		"17QyR2ixNj1AgpD5ZuXubvSJ3gPPQVcsvp",
+		"3MCMZjWAMdGqAhi1iF1oyiiE2jY5yBAYzV"
 	];
 	
 	function checkList(checkOutputScript){
