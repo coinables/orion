@@ -146,6 +146,27 @@
     transform: rotate(0deg);
     right:8px;
 }
+#addrPopUpBox{
+	 position: absolute;
+	left: 4px;
+	top:50px;
+	text-align: right;
+	z-index: 10;
+}
+.innerbox{
+	background-color: #d2d2d2;
+	padding: 10px;
+	text-align: center;
+	color: #2d2d2d;
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px; 
+}
+.lowerbox{
+	background-color: #d2d2d2;
+	padding: 10px;
+	text-align: center;
+	color: #2d2d2d;
+}
 	input{
 		background-color: #2d1e2d;
 		color: #f3f3f3;
@@ -203,6 +224,7 @@
 </div>
 
 <div id="searchOutput"></div>
+<div id="addrPopUpBox"></div>
 <div id="navbanner"><span style="color: #fff; font-size: 18px; cursor: pointer;" onclick="window.location.replace('../../');">ORION</span><div id="txbar"><input type="text" id="txQuery" placeholder="TRANSACTION ID" style="padding: 3px; font-size: 11px; width: 550px;"> <button onclick="explore();" style="padding: 4px; font-weight: bold; font-size: 9px; background-color: #0e0f0e; color: #AEE7F8; border: 1px solid #2e2f2e; cursor: pointer;">VIEW</button>&nbsp;<input type="text" placeholder="SEARCH/FILTER THIS VISUAL" style="padding: 3px; font-size: 9px; margin-left: 15px; width:200px;" onkeyup="return nodeSearch();" id="search"></div></div>
 
 <script>
@@ -732,7 +754,7 @@ window.onload = function(){
 	
 
 	$('.sigma-node').click(function() {
-	
+		$("#addrPopUpBox").fadeOut();
 	
 		clickinput = checkList($(this).attr('data-node-id'));
 		$("#search").val(clickinput);
@@ -767,14 +789,48 @@ window.onload = function(){
 function searchshow(innodeid){
 		
 	  var clickednodeid = innodeid;
-	  //console.log(clickednodeid);
-	  
-	 
+	  //console.log(clickednodeid);	
+	
+	 	  
+	  $("#addrPopUpBox").fadeIn();
+	  $("#addrPopUpBox").html("")
+	  $("#addrPopUpBox").append('<div class="innerbox"><b>'+clickednodeid+'</b></div>')
+		
+	  //addr info 
+	  var addrurl = "https://mempool.space/api/address/"+innodeid;
+	  var addurl2 = "https://mempool.space/api/address/"+innodeid+"/txs";
+	  $.ajax({
+			async: false,
+			type: "GET",
+			url: addrurl,
+			success: function(addrstats) {
+				var totaltxs = addrstats.chain_stats.tx_count;
+				var incomingtx = addrstats.chain_stats.funded_txo_count;
+				var outgoingtx = addrstats.chain_stats.spent_txo_count;
+				$("#addrPopUpBox").append('<div class="lowerbox"><b>Incoming TXS:</b>'+incomingtx+' &nbsp;&nbsp;<b>Outgoing TXS:</b>'+outgoingtx+' </div>')
+				
+				
+				$.ajax({
+						async: false,
+						type: "GET",
+						url: addurl2,
+						success: function(addresstxs){
+								randomTx = Math.floor(Math.random() * addresstxs.length);
+								randomTx2 = Math.floor(Math.random() * addresstxs.length);
+								randomTx3 = Math.floor(Math.random() * addresstxs.length);
+								
+								$("#addrPopUpBox").append('<div class="lowerbox"><a style="font-size: 9px;" href="../public/orion.html?q='+addresstxs[randomTx].txid+'">'+addresstxs[randomTx].txid+'</a><br><a style="font-size: 9px;" href="../public/orion.html?q='+addresstxs[randomTx2].txid+'">'+addresstxs[randomTx2].txid+'</a><br><a style="font-size: 9px;" href="../public/orion.html?q='+addresstxs[randomTx3].txid+'">'+addresstxs[randomTx3].txid+'</a><br></div>')
+						}
+				});
+				
+				
+			}
+		});
+		
 	 var selectednode = $('.sigma-node').filter('[data-node-id="'+clickednodeid+'"]');
 	 //console.dir(selectednode);
 	 selectednode.attr("fill","#069b11");
-	 selectednode.attr("r","16");
-	
+	 selectednode.attr("r","16");	
 }			
 				
  function nodeSearch(){
