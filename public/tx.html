@@ -132,6 +132,7 @@ window.onload = function(){
 				api = result;
 				console.log(result);
 				$("#transaction").val(api.txid);
+				$("#addrQuery").val(api.txid);
 				$("#block").val(api.status.block_hash);
 				var formattedTime = timeConverter(api.status.block_time);
 				$("#time").val(formattedTime);

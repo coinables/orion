@@ -203,7 +203,7 @@
 </div>
 
 <div id="searchOutput"></div>
-<div id="navbanner"><span style="color: #fff; font-size: 18px; cursor: pointer;" onclick="window.location.replace('../../');">ORION</span><div id="txbar"><input type="text" id="txQuery" placeholder="TRANSACTION ID" style="padding: 3px; font-size: 11px; width: 550px;"> <button onclick="explore();" style="padding: 4px; font-weight: bold; font-size: 9px; background-color: #0e0f0e; color: #AEE7F8; border: 1px solid #2e2f2e; cursor: pointer;">VIEW</button>&nbsp;<input type="text" placeholder="SEARCH/FILTER THIS VISUAL" style="padding: 3px; font-size: 9px; margin-left: 15px; width:200px;" onkeyup="return nodeSearch();" id="search"></div></div>
+<div id="navbanner"><span style="color: #fff; font-family: 'Courier New','Times New Roman',serif; font-size: 18px; cursor: pointer;" onclick="window.location.replace('../../');">ORION</span><div id="txbar"><input type="text" id="txQuery" placeholder="TRANSACTION ID" style="padding: 3px; font-size: 11px; width: 550px;"> <button onclick="explore();" style="padding: 4px; font-weight: bold; font-size: 9px; background-color: #0e0f0e; color: #AEE7F8; border: 1px solid #2e2f2e; cursor: pointer;">VIEW</button>&nbsp;<input type="text" placeholder="SEARCH/FILTER THIS VISUAL" style="padding: 3px; font-size: 9px; margin-left: 15px; width:200px;" onkeyup="return nodeSearch();" id="search"></div></div>
 
 <script>
 function explore(){
@@ -805,9 +805,9 @@ function searchshow(innodeid){
 						loopval = loopval.toFixed(8)
 						console.log(h.nodes[i].label+" "+h.connections[i]);
 						if(uilwr.length === 64){
-							$("#searchOutput").append("<br><h4><span class='nodeAlias'>"+h.nodes[i].label+'</span><span class="channels">'+h.connections[i]+"</span><br><input type='text' id='"+i+"' value='"+h.nodes[i].id+"' onclick='return searchshow(this.value);' style='cursor: pointer; width: 450px; margin-right: 5px;'><br><input type='text' id='"+i+"sats' value='"+loopval+" BTC' readonly></h4>");
+							$("#searchOutput").append("<br><h4><span class='nodeAlias'>"+h.nodes[i].label+" <a href='tx.html?q="+h.nodes[i].id+"'>Details</a></span><span class='channels'>"+h.connections[i]+"</span><br><input type='text' id='"+i+"' value='"+h.nodes[i].id+"' onclick='return searchshow(this.value);' style='width: 450px; margin-right: 5px;'><br><input type='text' id='"+i+"sats' value='"+loopval+" BTC' readonly></h4>");
 						} else {
-							$("#searchOutput").append("<br><h4><span class='nodeAlias'>"+h.nodes[i].label+'</span><span class="channels">'+h.connections[i]+"</span><br><input type='text' id='"+i+"' value='"+h.nodes[i].id+"' onclick='return searchshow(this.value);' style='cursor: pointer; width: 250px;'><br><input type='text' id='"+i+"sats' value='"+loopval+" BTC' readonly></h4>");
+							$("#searchOutput").append("<br><h4><span class='nodeAlias'>"+h.nodes[i].label+" <a href='address.html?q="+h.nodes[i].id+"'>Details</a></span><span class='channels'>"+h.connections[i]+"</span><br><input type='text' id='"+i+"' value='"+h.nodes[i].id+"' onclick='return searchshow(this.value);' style='width: 250px;'><br><input type='text' id='"+i+"sats' value='"+loopval+" BTC' readonly></h4>");
 						}
 						
 					}
