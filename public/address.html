@@ -94,6 +94,9 @@
 		right: 10px;
 		top: 90px;
 	}
+	#assochrd{
+		display: none;
+	}
   </style>
 </head>
 
@@ -110,7 +113,8 @@ Balance:  <input type="text" id="balance"><br>
 Total Received:  <input type="text" id="totreceived"><br>
 Pending:  <input type="text" id="pending"><br>
 # of Transactions:  <input type="text" id="txsnum"><br><br>
-
+<span id="assochrd">Associations:</span>
+<div id="assocs"></div>
 <h2>Transactions</h2>
 <div id="txsContainer">
 <div class="inum"><b>#</b></div><div class="iacct"><b>Transaction ID</b></div><div class="ivalue"><b>Time</b></div><br>
@@ -437,14 +441,20 @@ window.onload = function(){
 					weight	: 	3692
 				*/
 				var txslength = txapi.length;
+				var addrinputstr = "";
+				var addroutputstr = "";
 				var catchlabels = [];
 				for(var i=0;i<txslength;i++){
 					var formattime = timeConverter(txapi[i].status.block_time);
 					for(var ii=0;ii<txapi[i].vout.length;ii++){
 						var loopaddr = txapi[i].vout[ii].scriptpubkey_address;
+						var wholebtcs = parseFloat(txapi[i].vout[ii].value/100000000);
+						addroutputstr += loopaddr+" <span style='float: right;'>"+wholebtcs+" BTC</span><br>";
 						if(checkList(loopaddr)==="unknown"){
 							
 						} else {
+							//turn on associations
+							document.getElementById("assochrd").style.display = "block";
 							if(catchlabels.includes(checkList(loopaddr))){
 								//
 							} else {
@@ -453,11 +463,33 @@ window.onload = function(){
 							
 						}
 					}
+					
+					for(var iii=0;iii<txapi[i].vin.length;iii++){
+						var loopinaddr = txapi[i].vin[iii].prevout.scriptpubkey_address;
+						var wholebtcval = parseFloat(txapi[i].vin[iii].prevout.value/100000000);
+						addrinputstr += loopinaddr+" <span style='float: right;'>"+wholebtcval+" BTC</span><br>";
+						if(checkList(loopinaddr)==="unknown"){
+							
+						} else {
+							//turn on associations
+							document.getElementById("assochrd").style.display = "block";
+							if(catchlabels.includes(checkList(loopinaddr))){
+								//
+							} else {
+								catchlabels.push(checkList(loopinaddr));
+							}
+							
+						}
+						
+					}
 					console.log(txapi[i].status.block_time);
-					$("#txsContainer").append('<div class="inum">'+i+'</div><div class="iacct"><a href="../public/tx.html?q='+txapi[i].txid+'">'+txapi[i].txid+'</a> - <a href="../public/orion.html?q='+txapi[i].txid+'">View &#8886; Chart</a></div><div class="ivalue">'+formattime+'</div><br>');
+					$("#txsContainer").append('<div class="inum">'+i+'</div><div class="iacct"><table><tr><td align="left">'+addrinputstr+'</td><td align="right">'+addroutputstr+'</td></tr></table><a href="../public/tx.html?q='+txapi[i].txid+'">'+txapi[i].txid+'</a> - <a href="../public/orion.html?q='+txapi[i].txid+'">View &#8886; Chart</a></div><div class="ivalue">'+formattime+'</div><br>');
 				}
+				
+				
+				
 				for(i=0;i<catchlabels.length;i++){
-					$("#txsContainer").prepend('<div class="iacct">'+catchlabels[i]+'</div><br>');
+					$("#assocs").append('<div class="iacct">'+catchlabels[i]+'</div><br>');
 				}
 				
 				}
