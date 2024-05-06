@@ -441,10 +441,11 @@ window.onload = function(){
 					weight	: 	3692
 				*/
 				var txslength = txapi.length;
-				var addrinputstr = "";
-				var addroutputstr = "";
+				
 				var catchlabels = [];
 				for(var i=0;i<txslength;i++){
+					var addrinputstr = "";
+					var addroutputstr = "";
 					var formattime = timeConverter(txapi[i].status.block_time);
 					for(var ii=0;ii<txapi[i].vout.length;ii++){
 						var loopaddr = txapi[i].vout[ii].scriptpubkey_address;
