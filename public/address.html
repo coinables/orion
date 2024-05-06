@@ -67,7 +67,7 @@
 		border: 1px solid #000;
 	}
 	.iacct{
-		width: 900px;
+		width: 1100px;
 		display: inline-block;
 		margin: 0px;
 		border: 1px solid #000;
@@ -117,7 +117,7 @@ Pending:  <input type="text" id="pending"><br>
 <div id="assocs"></div>
 <h2>Transactions</h2>
 <div id="txsContainer">
-<div class="inum"><b>#</b></div><div class="iacct"><b>Transaction</b></div><div class="ivalue"><b>Time</b></div><br>
+
 </div>
 
 <input type="hidden" id="priceholder">
@@ -2039,7 +2039,7 @@ window.onload = function(){
 					for(var ii=0;ii<txapi[i].vout.length;ii++){
 						var loopaddr = txapi[i].vout[ii].scriptpubkey_address;
 						var wholebtcs = parseFloat(txapi[i].vout[ii].value/100000000);
-						addroutputstr += loopaddr+" <span style='float: right; margin-bottom: 7px; padding: 4px; background-color: #14A44D;'>"+wholebtcs+" BTC</span><br>";
+						addroutputstr += "<a href='address.html?q="+loopaddr+"'>"+loopaddr+"</a> <span style='margin-bottom: 7px; padding: 2px; background-color: #14A44D;'>"+wholebtcs+" BTC</span><br><br>";
 						if(checkList(loopaddr)==="unknown"){
 							
 						} else {
@@ -2057,7 +2057,7 @@ window.onload = function(){
 					for(var iii=0;iii<txapi[i].vin.length;iii++){
 						var loopinaddr = txapi[i].vin[iii].prevout.scriptpubkey_address;
 						var wholebtcval = parseFloat(txapi[i].vin[iii].prevout.value/100000000);
-						addrinputstr += loopinaddr+" <span style='float: right; margin-bottom: 7px; padding: 4px; background-color: #DC4C64;'>"+wholebtcval+" BTC</span><br>";
+						addrinputstr += "<a href='tx.html?q="+txapi[i].vin[iii].txid+"'>"+loopinaddr+"</a> <span style='margin-bottom: 7px; padding: 2px; background-color: #DC4C64;'>"+wholebtcval+" BTC</span><br><br>";
 						if(checkList(loopinaddr)==="unknown"){
 							
 						} else {
@@ -2073,7 +2073,7 @@ window.onload = function(){
 						
 					}
 					console.log(txapi[i].status.block_time);
-					$("#txsContainer").append('<div class="inum">'+i+'</div><div class="iacct"><table><tr><td align="left">'+addrinputstr+'</td><td align="right">'+addroutputstr+'</td></tr></table><a href="../public/tx.html?q='+txapi[i].txid+'">'+txapi[i].txid+'</a> - <a href="../public/orion.html?q='+txapi[i].txid+'">View &#8886; Chart</a></div><div class="ivalue">'+formattime+'</div><br>');
+					$("#txsContainer").append('<br><br><div class="ivalue">'+formattime+'</div><div class="iacct"><table style="width: 1100px; font-size: 13px;"><tr><td align="left">'+addrinputstr+'</td><td align="right">'+addroutputstr+'</td></tr></table><a href="../public/tx.html?q='+txapi[i].txid+'">'+txapi[i].txid+'</a> - <a href="../public/orion.html?q='+txapi[i].txid+'">View &#8886; Chart</a></div><br>');
 				}
 				
 				
