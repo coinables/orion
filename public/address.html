@@ -67,7 +67,7 @@
 		border: 1px solid #000;
 	}
 	.iacct{
-		width: 680px;
+		width: 900px;
 		display: inline-block;
 		margin: 0px;
 		border: 1px solid #000;
@@ -2028,22 +2028,7 @@ window.onload = function(){
 			success: function(result) {
 				console.log("addr txs ajax success");
 				var txapi = result;
-				//console.log(result);
 				
-				/*
-				0
-					: 
-					fee	: 	191344
-					locktime	: 	0
-					sigops	: 	0
-					size	: 	923
-					status		: 			{confirmed: false}
-					txid		: 					"253aafcd803e1fc0768eb07804ecf9e81221d9c1031de8cbcdcd67b7330c7436"
-					version	: 	2
-					vin	: 	(6) [{…}, {…}, {…}, {…}, {…}, {…}]
-					vout: 	[{…}]
-					weight	: 	3692
-				*/
 				var txslength = txapi.length;
 				
 				var catchlabels = [];
