@@ -117,7 +117,7 @@ Pending:  <input type="text" id="pending"><br>
 <div id="assocs"></div>
 <h2>Transactions</h2>
 <div id="txsContainer">
-<div class="inum"><b>#</b></div><div class="iacct"><b>Transaction ID</b></div><div class="ivalue"><b>Time</b></div><br>
+<div class="inum"><b>#</b></div><div class="iacct"><b>Transaction</b></div><div class="ivalue"><b>Time</b></div><br>
 </div>
 
 <input type="hidden" id="priceholder">
@@ -449,7 +449,7 @@ window.onload = function(){
 					for(var ii=0;ii<txapi[i].vout.length;ii++){
 						var loopaddr = txapi[i].vout[ii].scriptpubkey_address;
 						var wholebtcs = parseFloat(txapi[i].vout[ii].value/100000000);
-						addroutputstr += loopaddr+" <span style='float: right;'>"+wholebtcs+" BTC</span><br>";
+						addroutputstr += loopaddr+" <span style='float: right; margin-bottom: 7px; padding: 4px; background-color: #14A44D;'>"+wholebtcs+" BTC</span><br>";
 						if(checkList(loopaddr)==="unknown"){
 							
 						} else {
@@ -467,7 +467,7 @@ window.onload = function(){
 					for(var iii=0;iii<txapi[i].vin.length;iii++){
 						var loopinaddr = txapi[i].vin[iii].prevout.scriptpubkey_address;
 						var wholebtcval = parseFloat(txapi[i].vin[iii].prevout.value/100000000);
-						addrinputstr += loopinaddr+" <span style='float: right;'>"+wholebtcval+" BTC</span><br>";
+						addrinputstr += loopinaddr+" <span style='float: right; margin-bottom: 7px; padding: 4px; background-color: #DC4C64;'>"+wholebtcval+" BTC</span><br>";
 						if(checkList(loopinaddr)==="unknown"){
 							
 						} else {
