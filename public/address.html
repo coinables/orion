@@ -2070,10 +2070,10 @@ window.onload = function(){
 						} else {
 							//turn on associations
 							document.getElementById("assochrd").style.display = "block";
-							if(catchlabels.includes(checkList(loopaddr))){
+							if(catchlabels.includes(loopaddr)){
 								//
 							} else {
-								catchlabels.push(checkList(loopaddr));
+								catchlabels.push(loopaddr);
 							}
 							
 						}
@@ -2088,10 +2088,10 @@ window.onload = function(){
 						} else {
 							//turn on associations
 							document.getElementById("assochrd").style.display = "block";
-							if(catchlabels.includes(checkList(loopinaddr))){
+							if(catchlabels.includes(loopinaddr)){
 								//
 							} else {
-								catchlabels.push(checkList(loopinaddr));
+								catchlabels.push(loopinaddr);
 							}
 							
 						}
@@ -2104,7 +2104,7 @@ window.onload = function(){
 				
 				
 				for(i=0;i<catchlabels.length;i++){
-					$("#assocs").append('<div class="iacct">'+catchlabels[i]+'</div><br>');
+					$("#assocs").append('<div class="iacct">'+checkList(catchlabels[i])+' - <a href="address.html?q='+catchlabels[i]+'">'+catchlabels[i]+'</a></div><br>');
 				}
 				
 				}
