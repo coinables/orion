@@ -2098,7 +2098,7 @@ window.onload = function(){
 						
 					}
 					console.log(txapi[i].status.block_time);
-					$("#txsContainer").append('<br><br><div class="ivalue">'+formattime+'</div><div class="iacct"><table style="width: 1100px; font-size: 13px;"><tr><td align="left">'+addrinputstr+'</td><td align="right">'+addroutputstr+'</td></tr></table><a href="../public/tx.html?q='+txapi[i].txid+'">'+txapi[i].txid+'</a> - <a href="../public/orion.html?q='+txapi[i].txid+'">View &#8886; Chart</a></div><br>');
+					$("#txsContainer").append('<br><br><div class="ivalue">'+formattime+'</div><br><div class="iacct"><table style="width: 1100px; font-size: 13px;"><tr><td align="left">'+addrinputstr+'</td><td align="right">'+addroutputstr+'</td></tr></table><a href="../public/tx.html?q='+txapi[i].txid+'">'+txapi[i].txid+'</a> - <a href="../public/orion.html?q='+txapi[i].txid+'">View &#8886; Chart</a></div><br>');
 				}
 				
 				
