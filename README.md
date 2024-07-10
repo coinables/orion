@@ -10,6 +10,7 @@ Run `orion.html` located in the `public` directory to visualize a single transac
 
 Run `link.html` located in the `public` directory to visualize and link multiple transactions using the memory add (M+) and memory remove (M-) buttons. Clicking (M+) will save the current transaction data to the clients local memory, and will be loaded up with all future transactions queried. You can use the (M+) button multiple times to expand the visualize. Clicking (M-) will remove the saved data from local memory.
 
+Donations accepted (BIP352): sp1qqgyfdwfg3quxngctw4w7z0xh9hntfkf3tdzrts5cjgqxdvycnv05cqul76mhtrp3k497hqxxeh247qczuy624yw4s24tn5j2zsztdvyntuwq5jcz
 
 This is free and unencumbered software released into the public domain.
 
