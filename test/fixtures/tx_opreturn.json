@@ -1,0 +1,63 @@
+{
+ "fee": 1260,
+ "locktime": 0,
+ "sigops": 2,
+ "size": 363,
+ "status": {
+  "block_hash": "000000000000000000011521357daf123cd5af09c1ca0c06fe11d6d9c6ad10df",
+  "block_height": 971587,
+  "block_time": 1792073909,
+  "confirmed": true
+ },
+ "txid": "21f607b84a595596c98203e1833a422c7e958213db1756e067a1696c8642352c",
+ "version": 2,
+ "vin": [
+  {
+   "is_coinbase": false,
+   "prevout": {
+    "scriptpubkey": "0014ed6f753fb955090c233e46837d6da6fc57d0825f",
+    "scriptpubkey_address": "bc1qa4hh20ae25yscge7g6ph6mdxl3tapqjlztwx0r",
+    "scriptpubkey_asm": "OP_0 OP_PUSHBYTES_20 ed6f753fb955090c233e46837d6da6fc57d0825f",
+    "scriptpubkey_type": "v0_p2wpkh",
+    "value": 660
+   },
+   "scriptsig": "",
+   "scriptsig_asm": "",
+   "sequence": 4294967295,
+   "txid": "8c16b5f0939a786097adb8d25931dfb542d0058717ee729c0db839fab24943d7",
+   "vout": 1,
+   "witness": [
+    "3045022100c64f34216565ca25adf1f3e42fee59de34339eea6dec21d352c83ce09384526702200c43b8dd2222883a9fe5f1cd54489a68e57ace470e57239ec226d1498bf6845401",
+    "03e44890e148485ee0d26c2d1f0183d669a87ad3fbb26af74a4d83d562540b2e88"
+   ]
+  },
+  {
+   "is_coinbase": false,
+   "prevout": {
+    "scriptpubkey": "0014ed6f753fb955090c233e46837d6da6fc57d0825f",
+    "scriptpubkey_address": "bc1qa4hh20ae25yscge7g6ph6mdxl3tapqjlztwx0r",
+    "scriptpubkey_asm": "OP_0 OP_PUSHBYTES_20 ed6f753fb955090c233e46837d6da6fc57d0825f",
+    "scriptpubkey_type": "v0_p2wpkh",
+    "value": 600
+   },
+   "scriptsig": "",
+   "scriptsig_asm": "",
+   "sequence": 4294967295,
+   "txid": "c7c492047f88d0b0ffa3bc67a4734bb03d6c9a4faed86fe96365e3bedb331f16",
+   "vout": 1,
+   "witness": [
+    "3045022100f18b38e76d4bf4f6ecfba1aaf410168643cdba346ffd2923d754d44b88ddbdc4022057c7948f7f03c4942322d2cbf3a0fb34bed0accdd2fdb8902d036e8f1b78bebb01",
+    "03e44890e148485ee0d26c2d1f0183d669a87ad3fbb26af74a4d83d562540b2e88"
+   ]
+  }
+ ],
+ "vout": [
+  {
+   "scriptpubkey": "6a2aa16126a7d5a0e8f58c54589fc2f4269886659575f66eb953a398d3428801b560f8126d189c2f2e6514e5",
+   "scriptpubkey_asm": "OP_RETURN OP_PUSHBYTES_42 a16126a7d5a0e8f58c54589fc2f4269886659575f66eb953a398d3428801b560f8126d189c2f2e6514e5",
+   "scriptpubkey_type": "op_return",
+   "value": 0
+  }
+ ],
+ "weight": 798
+}

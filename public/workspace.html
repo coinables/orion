@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orion Workspace</title>
+<link rel="stylesheet" href="css/workspace.css">
+</head>
+<body>
+<header id="top">
+  <a class="brand" href="../index.html" title="Back to the start page">Orion <span>workspace</span></a>
+  <form id="searchForm" autocomplete="off">
+    <label class="sr" for="q">Transaction ID or address</label>
+    <input id="q" type="text" placeholder="Transaction ID or address" spellcheck="false">
+    <button type="submit" class="primary">Open</button>
+  </form>
+  <div class="navgroup" role="group" aria-label="History">
+    <button type="button" id="navBack" class="navbtn" title="Back (Alt+Left)" aria-label="Back" disabled>&#9664;</button>
+    <button type="button" id="navFwd" class="navbtn" title="Forward (Alt+Right)" aria-label="Forward" disabled>&#9654;</button>
+  </div>
+  <label class="check focus-toggle" title="Show only the neighbourhood of the vertex you are looking at"><input type="checkbox" id="focusOn" checked> Focus</label>
+  <label class="sr" for="depth">Depth</label>
+  <select id="depth" title="How many steps around the focused vertex to show">
+    <option value="1">depth 1</option><option value="2" selected>depth 2</option><option value="3">depth 3</option>
+  </select>
+  <button type="button" id="btnAmounts" hidden title="Show amounts as Bitcoin, both Bitcoin and fiat, or fiat only">₿ + $</button>
+  <button type="button" id="btnSide" class="icon-only narrow-only" aria-label="Show controls">Controls</button>
+  <div class="spacer"></div>
+  <button type="button" id="btnFit" title="Fit everything in view (F)">Fit</button>
+  <button type="button" id="btnRelayout" title="Recompute the layout and release dragged vertices">Re-layout</button>
+  <details class="menu" id="exportMenu">
+    <summary>Export</summary>
+    <div class="menu-body">
+      <label class="check"><input type="checkbox" id="exportVisible"> Visible part only</label>
+      <button type="button" data-export="json">Workspace (.json) — can be imported</button>
+      <button type="button" data-export="csv-nodes">Nodes (.csv)</button>
+      <button type="button" data-export="csv-edges">Edges (.csv)</button>
+      <button type="button" data-export="graphml">GraphML (.graphml) — Gephi, Maltego, yEd</button>
+      <button type="button" data-export="png">Image (.png)</button>
+    </div>
+  </details>
+  <button type="button" id="btnImport">Import</button>
+  <input type="file" id="fileImport" accept=".json,application/json" hidden>
+  <button type="button" id="btnClear" class="danger">Clear</button>
+</header>
+
+<div id="ctxMenu" role="menu" aria-label="Actions" hidden></div>
+
+<div id="restore" class="banner" hidden>
+  <span id="restoreText"></span>
+  <button type="button" id="restoreYes" class="primary">Restore</button>
+  <button type="button" id="restoreNo">Discard</button>
+</div>
+
+<nav id="trail" aria-label="Trail of places you have been" hidden></nav>
+
+<main>
+  <aside id="side" aria-label="Controls">
+    <div class="panel-head"><span>Controls</span><button type="button" id="sideCollapse" class="collapse-btn" aria-label="Hide controls" aria-expanded="true" aria-controls="side" title="Hide controls (C)">«</button></div>
+    <details open>
+      <summary>Data source</summary>
+      <div class="sec">
+        <label for="source">Where to fetch from</label>
+        <select id="source">
+          <option value="clearnet">mempool.space</option>
+          <option value="tor">mempool.space over Tor (.onion)</option>
+          <option value="blockstream">Blockstream.info</option>
+          <option value="custom">My own Esplora URL…</option>
+        </select>
+        <input id="customBase" type="url" placeholder="https://my-node.example/api" hidden>
+        <p class="hint" id="sourceHint"></p>
+        <div class="row"><button type="button" id="testSource">Test connection</button><span id="testResult" role="status"></span></div>
+        <p class="hint" id="reqStats" aria-live="off"></p>
+      </div>
+    </details>
+
+    <details open>
+      <summary>View</summary>
+      <div class="sec">
+        <span class="lbl">Layout</span>
+        <div class="seg" id="layoutSeg" role="radiogroup" aria-label="Layout">
+          <button type="button" role="radio" data-layout="flow" aria-checked="true" title="Left to right in the direction money moves">Flow</button>
+          <button type="button" role="radio" data-layout="timeline" aria-checked="false" title="Transactions placed by confirmation time">Timeline</button>
+          <button type="button" role="radio" data-layout="force" aria-checked="false" title="Connected vertices pull together">Force</button>
+        </div>
+        <div id="scaleRow" hidden>
+          <span class="lbl">Time scale</span>
+          <div class="seg" id="scaleSeg" role="radiogroup" aria-label="Time scale">
+            <button type="button" role="radio" data-scale="compact" aria-checked="true" title="Long quiet gaps are shortened so bursts of activity stay readable">Compact</button>
+            <button type="button" role="radio" data-scale="proportional" aria-checked="false" title="Distance is proportional to elapsed time">Proportional</button>
+          </div>
+        </div>
+        <span class="lbl">Colour by</span>
+        <div class="seg" id="colorSeg" role="radiogroup" aria-label="Colour by">
+          <button type="button" role="radio" data-color="type" aria-checked="true">Kind</button>
+          <button type="button" role="radio" data-color="age" aria-checked="false" title="Older → newer">Age</button>
+          <button type="button" role="radio" data-color="script" aria-checked="false" title="p2pkh, p2sh, segwit, taproot…">Script</button>
+        </div>
+        <label class="check"><input type="checkbox" id="showLabels" checked> Show ids when zoomed in</label>
+        <label class="check"><input type="checkbox" id="edgeLabels" checked> Show amounts on the edges</label>
+        <div id="legend" class="legend" aria-label="Legend"></div>
+      </div>
+    </details>
+
+    <details open>
+      <summary>Filters</summary>
+      <div class="sec">
+        <span class="lbl">Minimum amount <output id="minAmountOut">off</output></span>
+        <input type="range" id="minAmount" min="0" max="1000" value="0" aria-label="Minimum amount (log scale)">
+        <div class="row wrap">
+          <button type="button" data-min="0">Off</button>
+          <button type="button" data-min="1000" title="Hide edges below 1,000 sat">Hide dust</button>
+          <button type="button" data-min="100000">&lt; 0.001 BTC</button>
+        </div>
+        <span class="lbl">Show</span>
+        <label class="check"><input type="checkbox" id="showData" checked> OP_RETURN data</label>
+        <label class="check"><input type="checkbox" id="showNonstd" checked> Non-standard outputs</label>
+        <label class="check"><input type="checkbox" id="incPending" checked> Unconfirmed transactions</label>
+        <label class="check"><input type="checkbox" id="incUnknown" checked> Transactions not loaded yet</label>
+        <span class="lbl">Address types</span>
+        <div id="scriptTypes" class="chips"></div>
+        <p class="hint">The time range is the slider below the graph.</p>
+      </div>
+    </details>
+
+    <details open>
+      <summary>Fiat value</summary>
+      <div class="sec">
+        <label for="fiatCur">Show amounts in</label>
+        <select id="fiatCur">
+          <option value="off">Bitcoin only</option>
+          <option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option>
+          <option value="CAD">CAD</option><option value="CHF">CHF</option><option value="AUD">AUD</option><option value="JPY">JPY</option>
+        </select>
+        <span class="lbl">Show amounts as</span>
+        <div class="seg" id="showSeg" role="radiogroup" aria-label="Show amounts as">
+          <button type="button" role="radio" data-show="btc" aria-checked="false" disabled>Bitcoin</button>
+          <button type="button" role="radio" data-show="both" aria-checked="true" disabled>Both</button>
+          <button type="button" role="radio" data-show="fiat" aria-checked="false" disabled>Fiat</button>
+        </div>
+        <span class="lbl">Price at</span>
+        <label class="check"><input type="radio" name="fiatBasis" value="each" checked disabled> Each transaction's own time</label>
+        <label class="check"><input type="radio" name="fiatBasis" value="ref" disabled> One transaction's time</label>
+        <div class="row" id="fiatRefRow">
+          <button type="button" id="fiatPick" disabled title="Use the selected (or focused) transaction as the reference moment for every amount">Use selected</button>
+          <span id="fiatRef" class="hint">none chosen</span>
+        </div>
+        <label class="check"><input type="radio" name="fiatBasis" value="today" disabled> Today</label>
+        <p class="hint" id="fiatStatus" role="status"></p>
+        <p class="hint" id="fiatHint">Prices come from the mempool.space price history, whose resolution varies: when measured it had one point a week before March 2023, one a day until January 2024 and hourly points after, but the server has also returned denser data. A price interpolated across more than two days is shown with ≈ and is rough (in spot checks weekly-era values were several percent off the market that day). For a report, take the exact price for that moment from an exchange.</p>
+      </div>
+    </details>
+
+    <details id="extSection">
+      <summary>External sources</summary>
+      <div class="sec">
+        <p class="hint">Look-ups happen only when you ask, for one wallet at a time: right-click a wallet, or use the button in its details. Nothing is looked up for the whole graph.</p>
+        <span class="lbl">Arkham Intelligence</span>
+        <label for="arkUrl">Lookup proxy</label>
+        <input id="arkUrl" type="url" value="http://127.0.0.1:8787" spellcheck="false">
+        <label for="arkToken">Proxy token</label>
+        <input id="arkToken" type="password" autocomplete="off" spellcheck="false" placeholder="printed when the proxy starts">
+        <label class="check"><input type="checkbox" id="arkRemember"> Remember the token on this device</label>
+        <div class="row"><button type="button" id="arkTest">Test</button><span id="arkResult" role="status"></span></div>
+        <p class="hint">Arkham's API cannot be called from a web page (it sends no CORS headers), so a small program on your machine, <code>tools/arkham_proxy.py</code>, makes the call. It keeps your API key in an environment variable: the key never enters this page. Each look-up sends the wallet's address to Arkham. Switched off while the data source is Tor.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Expansion limits</summary>
+      <div class="sec">
+        <label for="capTx">Most transactions to load per expand</label>
+        <input id="capTx" type="number" min="1" max="500" value="25">
+        <label for="capReq">Most network requests per action</label>
+        <input id="capReq" type="number" min="1" max="1000" value="80">
+        <label for="capPages">Address history pages (25 each)</label>
+        <input id="capPages" type="number" min="1" max="20" value="2">
+        <p class="hint">Public APIs rate-limit. When a limit stops an action the graph keeps what was loaded and says so.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Privacy</summary>
+      <div class="sec">
+        <label class="check"><input type="checkbox" id="persist" checked> Keep this session in this browser</label>
+        <p class="hint">Saves the graph with your labels and notes in the browser's local storage, unencrypted, so a reload does not lose work. Untick it on a shared machine; unticking deletes what was saved. Export is always explicit.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Help</summary>
+      <div class="sec help">
+        <p><b>Focus</b> shows one transaction or address and what is around it (depth = steps away). <b>Double-click</b> a vertex, or click a row under Funded by / Spent by / Transactions in the details, to move there; <b>◀ ▶</b> (or Alt+←/→) go back and forward through where you have been. Untick Focus to see everything loaded.</p>
+        <p><b>Addresses</b> can be pasted in any case or as an explorer link; <code>bc1…</code> is lower-cased for you, legacy <code>1…</code>/<code>3…</code> addresses are case-sensitive and checked before anything is sent.</p>
+        <p><b>Click</b> a vertex to inspect it. Without Focus, <b>double-click</b> loads its neighbours. <b>Drag</b> a vertex to pin it; drag the background to pan; scroll to zoom.</p>
+        <p><b>Edges</b> run in the direction money moves. Width = amount (log scale). Dashed = output not spent yet.</p>
+        <p><b>Squares</b> are transactions (hollow = not loaded), <b>circles</b> addresses, <b>diamonds</b> coinbase, <b>hexagons</b> OP_RETURN.</p>
+        <p><b>Right-click</b> a wallet or transaction for its actions: tag it (EXCH, THREAT, …), look a wallet up in Arkham, load more. <b>Tags</b> give a vertex a colour, a shape and a badge; set them next to the label in the details.</p>
+        <p><b>Previous / Next</b> under the graph step along the money: from a transaction to the wallets it paid (or that paid in), from a wallet to the transactions that spent from it. One choice moves at once; several open a list.</p>
+        <p>Keys: <kbd>[</kbd> previous, <kbd>]</kbd> next, <kbd>C</kbd> controls, <kbd>D</kbd> details, <kbd>Del</kbd> remove, <kbd>Esc</kbd> deselect, <kbd>F</kbd> fit, <kbd>/</kbd> search.</p>
+      </div>
+    </details>
+  </aside>
+
+  <section id="stage" aria-label="Graph">
+    <canvas id="cv" tabindex="0" aria-label="Transaction graph"></canvas>
+    <button type="button" id="sideTab" class="edge-tab left" hidden aria-label="Show controls" aria-controls="side" title="Show controls (C)">Controls ›</button>
+    <button type="button" id="inspTab" class="edge-tab right" hidden aria-label="Show details" aria-controls="inspector" title="Show details (D)">‹ <span id="inspTabText">Details</span></button>
+    <div id="stepbar" role="group" aria-label="Follow the money" hidden>
+      <div id="stepMenu" role="menu" hidden></div>
+      <button type="button" id="stepPrev" class="stepbtn" aria-haspopup="menu"><span class="arrow">◀</span> <span class="lbl">Previous</span> <span class="cnt" id="stepPrevN"></span></button>
+      <div id="stepHere"><span id="stepKind" class="kind"></span> <b id="stepName"></b> <span id="stepAmt"></span> <button type="button" id="stepLoad" hidden>Load history</button></div>
+      <button type="button" id="stepNext" class="stepbtn" aria-haspopup="menu"><span class="lbl">Next</span> <span class="cnt" id="stepNextN"></span> <span class="arrow">▶</span></button>
+      <label class="check small" title="Tick to go wallet by wallet; untick to jump from transaction to transaction"><input type="checkbox" id="viaWallets" checked> via wallets</label>
+    </div>
+    <div id="hud"><span id="counts"></span></div>
+    <div id="zoomBtns"><button type="button" id="zoomIn" aria-label="Zoom in">+</button><button type="button" id="zoomOut" aria-label="Zoom out">−</button></div>
+    <div id="empty">
+      <h2>Follow the money</h2>
+      <p>Paste a transaction id or an address above.</p>
+      <p><button type="button" id="sample" class="primary">Try a sample transaction</button> <button type="button" id="emptyImport">Open a workspace file</button></p>
+      <p class="hint">Everything runs in your browser. The only network traffic is to the data source you choose.</p>
+    </div>
+    <div id="tooltip" role="tooltip" hidden></div>
+    <div id="progress" hidden><span id="progressText"></span> <button type="button" id="cancel">Cancel</button></div>
+    <div id="toast" role="status" aria-live="polite" hidden></div>
+
+    <div id="timebar" aria-label="Time range">
+      <div class="tb-head">
+        <span class="lbl">Time range</span>
+        <span id="tbFrom" class="tb-date">—</span><span class="tb-dash">→</span><span id="tbTo" class="tb-date">—</span>
+        <span id="tbInfo" class="hint"></span>
+        <span class="spacer"></span>
+        <button type="button" id="tbPlay" title="Replay the graph growing through time">▶ Replay</button>
+        <button type="button" id="tbReset">Reset</button>
+      </div>
+      <div class="tb-body">
+        <canvas id="hist" height="34" aria-hidden="true"></canvas>
+        <div class="dual">
+          <div class="dual-track"><div id="dualFill"></div></div>
+          <input type="range" id="tFrom" min="0" max="1000" value="0" aria-label="Start of time range">
+          <input type="range" id="tTo" min="0" max="1000" value="1000" aria-label="End of time range">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <aside id="inspector" aria-label="Details" hidden>
+    <button type="button" id="inspCollapse" class="collapse-btn" aria-label="Hide details" aria-expanded="true" aria-controls="inspector" title="Hide details (D)">»</button>
+    <button type="button" id="inspClose" class="icon-only" aria-label="Close details">×</button>
+    <div id="inspBody"></div>
+  </aside>
+</main>
+
+<details id="log"><summary>Activity log <span id="logCount"></span></summary><ul id="logList"></ul></details>
+
+<script src="js/orion-address.js"></script>
+<script src="js/orion-tags.js"></script>
+<script src="js/orion-external.js"></script>
+<script src="js/orion-model.js"></script>
+<script src="js/orion-style.js"></script>
+<script src="js/orion-filter.js"></script>
+<script src="js/orion-layout.js"></script>
+<script src="js/orion-api.js"></script>
+<script src="js/orion-price.js"></script>
+<script src="js/orion-io.js"></script>
+<script src="js/orion-render.js"></script>
+<script src="js/orion-steps.js"></script>
+<script src="js/orion-nav.js"></script>
+<script src="data/known-addresses.js"></script>
+<script src="js/workspace.js"></script>
+</body>
+</html>
